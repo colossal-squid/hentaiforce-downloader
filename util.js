@@ -45,10 +45,10 @@ async function createCbz(folderName) {
     }
     await zip.generateAsync({ type: "uint8array" }).then(function (content) {
         // see FileSaver.js
-        fsPromises.writeFile(`./${folderName}.cbz`, Buffer.from(content));
+        fsPromises.writeFile(`./${folderName.replace(/_+/g, ' ').trim().replace(/\s/g, '_')}.cbz`, Buffer.from(content));
     });
     console.log('cleaning up')
-    await fsPromises.rm(`./${folderName}`, { recursive: true })
+    fsPromises.rm(`./${folderName}`, { recursive: true })
 }
 
 module.exports = {

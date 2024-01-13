@@ -14,11 +14,12 @@ const SCROLL_DELAY_MS = 2000;
     }
     console.log(`Will create a CBZ from ${url} .....`);
     const browser = await puppeteer.launch({
-        headless: "new",
+        headless: 'new',
+        defaultViewport: null
     });
     const page = await browser.newPage();
 
-    await page.goto(url);
+    await page.goto(url, {timeout: 0});
     console.log(
         "Page is open. Slowly scrolling down (this takes most of the time)"
     );
