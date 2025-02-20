@@ -1,6 +1,7 @@
 const fsPromises = require("fs").promises;
 const wget = require("node-wget-promise");
 const JSZip = require("jszip");
+const promiseRetry = require('promise-retry');
 
 /**
  * Downloads pictures into a folder
@@ -22,9 +23,12 @@ async function download(title, imageUrls) {
                 "Image url should be defined!"
             );
         }
-        await wget(url, {
-            output: `./${folderName}/${url.substring(url.lastIndexOf("/") + 1)}`,
-        }).catch((err) => console.error(err));
+        await promiseRetry(function (retry, number) {
+            console.log('attempt number', number);
+            return wget(url, {
+                output: `./${folderName}/${url.substring(url.lastIndexOf("/") + 1)}`,
+            }).catch(retry);
+        })
     }
     return folderName;
 }
@@ -48,7 +52,7 @@ async function createCbz(folderName) {
         fsPromises.writeFile(`./${folderName.replace(/_+/g, ' ').trim().replace(/\s/g, '_')}.cbz`, Buffer.from(content));
     });
     console.log('cleaning up')
-    fsPromises.rm(`./${folderName}`, { recursive: true })
+    await fsPromises.rm(`./${folderName}`, { recursive: true })
 }
 
 module.exports = {

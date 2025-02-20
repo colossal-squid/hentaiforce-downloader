@@ -43,4 +43,9 @@ const SCROLL_DELAY_MS = 2000;
     });
     const folderName = await download(title, imageUrls)
     await createCbz(folderName)
+    console.log('sleep 2 sec')
+    setTimeout(() => {
+        console.log('exit')
+        process.exit(0);
+    }, 2000)
 })();

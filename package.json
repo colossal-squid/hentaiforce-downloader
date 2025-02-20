@@ -12,7 +12,8 @@
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "node-wget-promise": "^0.1.6",
-    "puppeteer": "^20.5.0",
+    "promise-retry": "^2.0.1",
+    "puppeteer": "^24.2.1",
     "puppeteer-autoscroll-down": "^1.1.2"
   }
 }
