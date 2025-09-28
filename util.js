@@ -9,7 +9,7 @@ const promiseRetry = require('promise-retry');
  * @param {*} imageUrls - array of URL strings to download
  * @returns - folder name escaped
  */
-async function download(title, imageUrls) {
+async function download(title, imageUrls, forceRename=false, ext = "jpg") {
     console.log(`Downloading ${title}`);
     console.log(`Found ${imageUrls.length} pages to download`);
     const folderName = title.replaceAll(/[^a-zA-Z0-9]/g, "_");
@@ -26,7 +26,7 @@ async function download(title, imageUrls) {
         await promiseRetry(function (retry, number) {
             console.log('attempt number', number);
             return wget(url, {
-                output: `./${folderName}/${url.substring(url.lastIndexOf("/") + 1)}`,
+                output: `./${folderName}/${ forceRename ? i+"."+ext : url.substring(url.lastIndexOf("/") + 1) }`,
             }).catch(retry);
         })
     }
